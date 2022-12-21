@@ -2,14 +2,14 @@
 BACKUP_DIR:='src/old'
 BACKUP_UNNAMED_DIR:='src/old/unnamed'
 BACKUP_FILE_PAT:="main_XXX.rs"
-TEXT_TESTS_DIR:='output'
+TEXT_TESTS_DIR:='input'
 
 alias r := run
 alias re := reinit
 
 # Runs `main.rs` against the given num.in text test file
 run num='0': build
-	cargo run < {{num}}.in
+	cargo run < {{TEXT_TESTS_DIR}}/{{num}}.in
 
 # Saves current `main.rs` into BACKUP_DIR and inits a clean `main.rs`
 reinit name: (save name) init

@@ -3,6 +3,6 @@
 # Backup source files
 /src/old
 # Input/output files
-/output
+/input
 # Personal notes
 /notes.md
