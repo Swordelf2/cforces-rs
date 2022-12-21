@@ -5,3 +5,10 @@ version = 3
 [[package]]
 name = "cforces"
 version = "0.1.0"
+dependencies = [
+ "contest-lib",
+]
+
+[[package]]
+name = "contest-lib"
+version = "0.1.0"
