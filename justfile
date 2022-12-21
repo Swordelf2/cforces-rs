@@ -1,15 +1,45 @@
-alias r := run
+# Dir and pattern for backups of old source files
+BACKUP_DIR:='src/old'
+BACKUP_UNNAMED_DIR:='src/old/unnamed'
+BACKUP_FILE_PAT:="main_XXX.rs"
+TEXT_TESTS_DIR:='output'
 
+alias r := run
+alias re := reinit
+
+# Runs `main.rs` against the given num.in text test file
 run num='0': build
 	cargo run < {{num}}.in
 
-build:
-	cargo build
+# Saves current `main.rs` into BACKUP_DIR and inits a clean `main.rs`
+reinit name: (save name) init
 
-test num='0':
-	cargo run < {{num}}.in | tee tmp.out
-	diff tmp.out {{num}}.out
+# Saves current `main.rs` into BACKUP_DIR. Use reinit
+save name:
+	@mkdir -p "{{BACKUP_DIR}}"
+	mv "src/main.rs" "{{BACKUP_DIR}}/main_{{name}}.rs"
 
+# Resets `main.rs`. Prefer to use 
+init: clean_tests
+	@mkdir -p "{{BACKUP_UNNAMED_DIR}}"
+	[ -f src/main.rs ] && mv src/main.rs `mktemp {{BACKUP_UNNAMED_DIR}}/{{BACKUP_FILE_PAT}}` || true
+	cp src/template.rs src/main.rs
+	echo "" >> src/main.rs
+	cat contest-lib/src/input.rs >> src/main.rs
+	@mkdir -p "{{TEXT_TESTS_DIR}}"
+	bash -c "touch {{TEXT_TESTS_DIR}}/{0,1}.{in,out}"
+
+# Cleans trash files
 clean:
 	cargo clean
-	rm -f tmp.out
+	rm -rf {{BACKUP_UNNAMED_DIR}}
+
+# Cleans trash files and old solutions
+clean_old: clean clean_tests
+	rm -rf {{BACKUP_DIR}}/*
+
+clean_tests:
+	bash -c "rm -f {{TEXT_TESTS_DIR}}/{0,1}.{in,out}"
+
+build:
+	cargo build

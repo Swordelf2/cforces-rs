@@ -1,4 +1,8 @@
+# Rust-specific
 /target
-
-/tmp.out
+# Backup source files
+/src/old
+# Input/output files
+/output
+# Personal notes
 /notes.md
