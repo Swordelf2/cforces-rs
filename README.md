@@ -1,7 +1,7 @@
 
 # Overview
 
-This repo is for writing contests / solve problems **in Rust**
+This repo is for writing contests / solving problems **in Rust**
 on coding contest sites like Codeforces, AtCoder etc.
 
 
