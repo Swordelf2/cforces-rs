@@ -1,6 +1,7 @@
 # Rust-specific
 /target
-# Backup source files
+# Solution source files
+/src/main.rs
 /src/old
 # Input/output files
 /input
