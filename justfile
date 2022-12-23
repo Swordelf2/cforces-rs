@@ -1,8 +1,9 @@
 # Dir and pattern for backups of old source files
 BACKUP_DIR:='src/old'
 BACKUP_UNNAMED_DIR:='src/old/unnamed'
-BACKUP_FILE_PAT:="main_XXX.rs"
+BACKUP_FILE_PAT:='main_XXX.rs'
 TEXT_TESTS_DIR:='input'
+CONTEST_LIB:='contest-lib'
 
 alias r := run
 alias re := reinit
@@ -44,3 +45,14 @@ clean_tests:
 
 build:
 	cargo build
+
+# Updates files `src/template.rs` and `contest-lib/src/input.rs` from the current `main.rs`
+update_lib:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	main_rs="src/main.rs"
+	template_rs="src/template.rs"
+	input_lib_rs={{CONTEST_LIB}}/src/input.rs
+	lib_line_num=$(grep -n "/\* Library \*/" $main_rs | cut -d: -f1)
+	head --lines=$(($lib_line_num)) $main_rs > $template_rs && echo "Updated $template_rs"
+	tail --lines=+$(($lib_line_num + 2)) $main_rs > $input_lib_rs && echo "Updated $input_lib_rs"
