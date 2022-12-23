@@ -7,3 +7,8 @@
 * LeetCode
 * Check "drop-in replacements for lower_bound(),...) from EbTech's work
 * add `just restore A`
+
+# Future work on input/output
+* Find better way for /* Library */ and /* Solution */ and stuff (for these comments)
+* Use Result and proper errors and error handling
+* Add easy flushing

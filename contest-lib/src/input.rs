@@ -1,3 +1,5 @@
+/* Input */
+
 use std::io::BufRead;
 use std::io::StdinLock;
 
