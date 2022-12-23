@@ -26,15 +26,23 @@ save name:
 	@mkdir -p "{{BACKUP_DIR}}"
 	mv "src/main.rs" "{{BACKUP_DIR}}/main_{{name}}.rs"
 
-# Resets `main.rs`. Prefer to use 
-init: clean_tests
-	@mkdir -p "{{BACKUP_UNNAMED_DIR}}"
-	[ -f src/main.rs ] && mv src/main.rs `mktemp {{BACKUP_UNNAMED_DIR}}/{{BACKUP_FILE_PAT}}` || true
-	cp src/template.rs src/main.rs
+# Restores `main.rs` from
+restore name: save_unnamed
+	mv "{{BACKUP_DIR}}/main_{{name}}.rs" "src/main.rs"
+
+# Resets `main.rs` and input/output tests. Prefer to use `reinit`
+init: save_unnamed clean_tests
+	cp "src/template.rs" "src/main.rs"
 	echo "" >> src/main.rs
-	cat contest-lib/src/input.rs >> src/main.rs
+	cat "contest-lib/src/input.rs" >> "src/main.rs"
 	@mkdir -p "{{TEXT_TESTS_DIR}}"
 	bash -c "touch {{TEXT_TESTS_DIR}}/{0,1}.{in,out} {{TEXT_TESTS_DIR}}/tmp.out"
+
+# Saves `main.rs` into a directory for old unnamed solutions
+save_unnamed:
+	@mkdir -p "{{BACKUP_UNNAMED_DIR}}"
+	[ -f src/main.rs ] && mv "src/main.rs" $(mktemp {{BACKUP_UNNAMED_DIR}}/{{BACKUP_FILE_PAT}}) || true
+
 
 # Cleans trash files
 clean:
