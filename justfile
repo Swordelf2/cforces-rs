@@ -28,7 +28,7 @@ init: clean_tests
 	echo "" >> src/main.rs
 	cat contest-lib/src/input.rs >> src/main.rs
 	@mkdir -p "{{TEXT_TESTS_DIR}}"
-	bash -c "touch {{TEXT_TESTS_DIR}}/{0,1}.{in,out}"
+	bash -c "touch {{TEXT_TESTS_DIR}}/{0,1}.{in,out} {{TEXT_TESTS_DIR}}/tmp.out"
 
 # Cleans trash files
 clean:
@@ -40,7 +40,7 @@ clean_old: clean clean_tests
 	rm -rf {{BACKUP_DIR}}/*
 
 clean_tests:
-	bash -c "rm -f {{TEXT_TESTS_DIR}}/{0,1}.{in,out}"
+	bash -c "rm -f {{TEXT_TESTS_DIR}}/*.{in,out}"
 
 build:
 	cargo build
