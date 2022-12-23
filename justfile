@@ -9,7 +9,8 @@ alias re := reinit
 
 # Runs `main.rs` against the given num.in text test file
 run num='0': build
-	cargo run < {{TEXT_TESTS_DIR}}/{{num}}.in
+	cargo run < {{TEXT_TESTS_DIR}}/{{num}}.in > {{TEXT_TESTS_DIR}}/tmp.out
+	@diff -Z {{TEXT_TESTS_DIR}}/tmp.out {{TEXT_TESTS_DIR}}/{{num}}.out && echo "OK!"
 
 # Saves current `main.rs` into BACKUP_DIR and inits a clean `main.rs`
 reinit name: (save name) init
