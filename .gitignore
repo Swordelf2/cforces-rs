@@ -1,5 +1,7 @@
 # Rust-specific
 /target
+/contest-lib/target
+/contest-lib/Cargo.lock
 # Solution source files
 /src/main.rs
 /src/old
