@@ -8,4 +8,5 @@
 # Input/output files
 /input
 # Personal notes
-/notes.md
+# TODO `notes.md` to gitignore
+## /notes.md
