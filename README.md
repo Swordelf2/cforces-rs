@@ -28,7 +28,6 @@ on coding contest sites like Codeforces, AtCoder etc.
 
 # Future work
 
-* Add proper input/output and tests to `contest-lib`.
 * Support Leetcode.
 * Add `just restore A` - restores solution `A` from old solutions.
 * Expand `contest-lib` and tests -

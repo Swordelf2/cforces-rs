@@ -1,4 +1,5 @@
 use std::io::BufRead;
+use std::io::StdinLock;
 
 pub struct Scanner {
     buffer: Vec<String>,
@@ -8,15 +9,16 @@ pub struct Scanner {
 impl Scanner {
     /// Locks `stdin` and returns a new Scanner
     #[allow(clippy::new_without_default)]
-    pub fn new() -> Self {
-        return Scanner {
+    pub fn new(stdin_lock: StdinLock<'static>) -> Self {
+        Self {
             buffer: Vec::new(),
-            stdin_lock: std::io::stdin().lock(),
-        };
+            stdin_lock,
+        }
     }
 
     /// Parses next input from stdin up to whitespace into the given type
-    pub fn n<T: std::str::FromStr>(&mut self) -> T {
+    #[allow(clippy::should_implement_trait)]
+    pub fn next<T: std::str::FromStr>(&mut self) -> T {
         loop {
             if let Some(token) = self.buffer.pop() {
                 return token.parse().ok().expect("Failed parse");
