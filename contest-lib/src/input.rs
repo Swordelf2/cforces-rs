@@ -1,15 +1,15 @@
 use std::io::BufRead;
 use std::io::StdinLock;
 
-pub struct Scanner {
+pub struct Scanner<'a> {
     buffer: Vec<String>,
-    stdin_lock: std::io::StdinLock<'static>,
+    stdin_lock: std::io::StdinLock<'a>,
 }
 
-impl Scanner {
+impl<'a> Scanner<'a> {
     /// Locks `stdin` and returns a new Scanner
     #[allow(clippy::new_without_default)]
-    pub fn new(stdin_lock: StdinLock<'static>) -> Self {
+    pub fn new(stdin_lock: StdinLock<'a>) -> Self {
         Self {
             buffer: Vec::new(),
             stdin_lock,

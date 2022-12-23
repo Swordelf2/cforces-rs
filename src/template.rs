@@ -1,12 +1,14 @@
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Input / output
-    let mut scan = Scanner::new(std::io::stdin().lock());
-    let mut out = std::io::BufWriter::new(std::io::stdout().lock());
+    let (stdin, stdout) = (std::io::stdin(), std::io::stdout());
+    let mut scan = Scanner::new(stdin.lock());
+    let mut out = std::io::BufWriter::new(stdout.lock());
     macro_rules! read {
         ( $t:ty ) => {
             scan.next::<$t>()
         };
     }
+    #[allow(unused_macros)]
     macro_rules! read_vec {
         ( $t: ty) => {
             (0..scan.next::<usize>())
