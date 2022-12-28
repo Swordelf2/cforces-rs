@@ -1,3 +1,5 @@
+# Editor
+/.vscode/
 # Rust-specific
 /target
 /contest-lib/target
