@@ -1,6 +1,6 @@
+#![allow(clippy::doc_markdown)]
 //! Most of the code in this module is copied from
 //! [EbTech's work](https://github.com/EbTech/rust-algorithms)
-
 pub mod disjoint_sets;
 
 /// A compact graph representation. Edges are numbered in order of insertion.
@@ -18,6 +18,7 @@ impl Graph {
     /// Initializes a graph with vmax vertices and no edges. To reduce
     /// unnecessary allocations, emax_hint should be close to the number of
     /// edges that will be inserted.
+    #[must_use]
     pub fn new(vmax: usize, emax_hint: usize) -> Self {
         Self {
             first: vec![None; vmax],
@@ -27,16 +28,18 @@ impl Graph {
     }
 
     /// Returns the number of vertices.
+    #[must_use]
     pub fn num_v(&self) -> usize {
         self.first.len()
     }
 
     /// Returns the number of edges, double-counting undirected edges.
+    #[must_use]
     pub fn num_e(&self) -> usize {
         self.endp.len()
     }
 
-    /// Adds a directed edge from u to v.
+    /// Adds a directed edge from `u` to `v`.
     pub fn add_edge(&mut self, u: usize, v: usize) {
         self.next.push(self.first[u]);
         self.first[u] = Some(self.num_e());
@@ -60,6 +63,7 @@ impl Graph {
     }
 
     /// Gets vertex u's adjacency list.
+    #[must_use]
     pub fn adj_list(&self, u: usize) -> AdjListIterator {
         AdjListIterator {
             graph: self,

@@ -1,3 +1,6 @@
+#![warn(clippy::todo, clippy::unimplemented, clippy::dbg_macro)]
+#![allow(clippy::mutable_key_type)]
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     /* Input / output */
     let (stdin, stdout) = (std::io::stdin(), std::io::stdout());

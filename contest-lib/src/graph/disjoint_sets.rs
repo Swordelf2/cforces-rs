@@ -6,6 +6,7 @@ pub struct DisjointSets {
 
 impl DisjointSets {
     /// Initializes disjoint sets containing one element each.
+    #[must_use]
     pub fn new(size: usize) -> Self {
         Self {
             parent: (0..size).collect(),

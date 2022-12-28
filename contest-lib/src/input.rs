@@ -11,6 +11,7 @@ pub struct Scanner<'a> {
 impl<'a> Scanner<'a> {
     /// Locks `stdin` and returns a new Scanner
     #[allow(clippy::new_without_default)]
+    #[must_use]
     pub fn new(stdin_lock: StdinLock<'a>) -> Self {
         Self {
             buffer: Vec::new(),

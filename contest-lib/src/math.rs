@@ -1,6 +1,11 @@
 type UInt = u64;
-type Int = i32;
 
+/// Computes greatest common divisor.
+///
+/// # Panics
+///
+/// Panics of `a <= 0` or `b <= 0`.
+#[must_use]
 pub fn gcd(mut a: UInt, mut b: UInt) -> UInt {
     if a < b {
         std::mem::swap(&mut a, &mut b);
@@ -13,12 +18,19 @@ pub fn gcd(mut a: UInt, mut b: UInt) -> UInt {
     a
 }
 
-pub fn log2(value: Int) -> Int {
+/// Returns base 2 logarithm of the given value, rounded
+///
+/// # Panics
+///
+/// Panics if `value <= 0`.
+#[must_use]
+pub fn log2(value: UInt) -> UInt {
     assert!(value > 0);
-    (Int::BITS - (value).leading_zeros() - 1) as Int
+    (UInt::BITS - (value).leading_zeros() - 1).into()
 }
 
 /// Computes `value ^ pow mod m`
+#[must_use]
 pub fn pow_mod(value: UInt, mut pow: UInt, m: UInt) -> UInt {
     let mut value_pow2: UInt = value;
     let mut res: UInt = 1;
@@ -32,6 +44,9 @@ pub fn pow_mod(value: UInt, mut pow: UInt, m: UInt) -> UInt {
     res
 }
 
+/// # Panics
+/// `val <= 0`
+#[must_use]
 pub fn to_bits(mut val: UInt) -> Vec<bool> {
     assert!(val > 0);
     let mut res: Vec<bool> = Vec::new();
@@ -44,6 +59,7 @@ pub fn to_bits(mut val: UInt) -> Vec<bool> {
 }
 
 #[cfg(test)]
+#[allow(clippy::unreadable_literal)]
 mod tests {
     use super::*;
 
