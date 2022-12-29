@@ -31,6 +31,7 @@ save name:
 	@mkdir -p "{{BACKUP_DIR}}"
 	mv "src/main.rs" "{{BACKUP_DIR}}/main_{{name}}.rs"
 
+# Configure project to compete on the given site. Supported values: [cforces, atcoder, leetcode]
 config configuration='':
 	bash {{CONFIG_SCRIPT}} {{CONFIG_FILE}} {{configuration}}
 
