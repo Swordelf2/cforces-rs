@@ -4,10 +4,16 @@ BACKUP_UNNAMED_DIR:='src/old/unnamed'
 BACKUP_FILE_PAT:='main_XXX.rs'
 TEXT_TESTS_DIR:='input'
 CONTEST_LIB:='contest-lib'
+CONFIG_FILE:='contest_config'
+CONFIG_SCRIPT:='contest_config.sh'
+GET_TEMPLATE:="bash" + " " + CONFIG_SCRIPT + " " + CONFIG_FILE + " " + "--get-template"
 
 alias r := run
 alias i := irun
 alias re := reinit
+
+hello:
+	echo {{GET_TEMPLATE}}
 
 # Runs `main.rs` against the given num.in text test file
 run num='0': build
@@ -26,15 +32,16 @@ save name:
 	@mkdir -p "{{BACKUP_DIR}}"
 	mv "src/main.rs" "{{BACKUP_DIR}}/main_{{name}}.rs"
 
+config configuration='':
+	bash {{CONFIG_SCRIPT}} {{CONFIG_FILE}} {{configuration}}
+
 # Restores `main.rs` from
 restore name: save_unnamed
 	mv "{{BACKUP_DIR}}/main_{{name}}.rs" "src/main.rs"
 
 # Resets `main.rs` and input/output tests. Prefer to use `reinit`
 init: save_unnamed clean_tests
-	cp "src/template.rs" "src/main.rs"
-	echo "" >> src/main.rs
-	cat "contest-lib/src/input.rs" >> "src/main.rs"
+	cp $({{GET_TEMPLATE}}) "src/main.rs"
 	@mkdir -p "{{TEXT_TESTS_DIR}}"
 	bash -c "touch {{TEXT_TESTS_DIR}}/{0,1}.{in,out} {{TEXT_TESTS_DIR}}/tmp.out"
 
@@ -45,27 +52,29 @@ save_unnamed:
 
 
 # Cleans trash files
-clean:
+clean: clean_tests
 	cargo clean
 	rm -rf {{BACKUP_UNNAMED_DIR}}
+
+clean_tests:
+	bash -c "rm -f {{TEXT_TESTS_DIR}}/*.{in,out}"
 
 # Cleans trash files and old solutions
 clean_old: clean clean_tests
 	rm -rf {{BACKUP_DIR}}/*
 
-clean_tests:
-	bash -c "rm -f {{TEXT_TESTS_DIR}}/*.{in,out}"
-
 build:
 	cargo build
 
-# Updates files `src/template.rs` and `contest-lib/src/input.rs` from the current `main.rs`
 update_lib:
-	#!/usr/bin/env bash
-	set -euo pipefail
-	main_rs="src/main.rs"
-	template_rs="src/template.rs"
-	input_lib_rs={{CONTEST_LIB}}/src/input.rs
-	lib_line_num=$(grep -n "/\* Library \*/" $main_rs | cut -d: -f1)
-	head --lines=$(($lib_line_num)) $main_rs > $template_rs && echo "Updated $template_rs"
-	tail --lines=+$(($lib_line_num + 2)) $main_rs > $input_lib_rs && echo "Updated $input_lib_rs"
+	cp "src/main.rs" $({{GET_TEMPLATE}})
+# # Updates files `src/template.rs` and `contest-lib/src/input.rs` from the current `main.rs`
+# update_lib:
+# 	#!/usr/bin/env bash
+# 	set -euo pipefail
+# 	main_rs="src/main.rs"
+# 	template_rs=$({{GET_TEMPLATE}})
+# 	input_lib_rs={{CONTEST_LIB}}/src/input.rs
+# 	lib_line_num=$(grep -n "/\* Library \*/" $main_rs | cut -d: -f1)
+# 	head --lines=$(($lib_line_num)) $main_rs > $template_rs && echo "Updated $template_rs"
+# 	tail --lines=+$(($lib_line_num + 2)) $main_rs > $input_lib_rs && echo "Updated $input_lib_rs"

@@ -2,8 +2,12 @@
 /.vscode/
 # Rust-specific
 /target
+/rust-toolchain
 /contest-lib/target
 /contest-lib/Cargo.lock
+# Local configuration
+/contest_config
+/contest_config.sh
 # Solution source files
 /src/main.rs
 /src/old
