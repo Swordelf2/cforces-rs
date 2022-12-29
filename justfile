@@ -3,7 +3,6 @@ BACKUP_DIR:='src/old'
 BACKUP_UNNAMED_DIR:='src/old/unnamed'
 BACKUP_FILE_PAT:='main_XXX.rs'
 TEXT_TESTS_DIR:='input'
-CONTEST_LIB:='contest-lib'
 CONFIG_FILE:='contest_config'
 CONFIG_SCRIPT:='contest_config.sh'
 GET_TEMPLATE:="bash" + " " + CONFIG_SCRIPT + " " + CONFIG_FILE + " " + "--get-template"
@@ -68,7 +67,9 @@ build:
 
 update_lib:
 	cp "src/main.rs" $({{GET_TEMPLATE}})
+
 # # Updates files `src/template.rs` and `contest-lib/src/input.rs` from the current `main.rs`
+# NOTE: OUT OF DATE
 # update_lib:
 # 	#!/usr/bin/env bash
 # 	set -euo pipefail
@@ -78,3 +79,9 @@ update_lib:
 # 	lib_line_num=$(grep -n "/\* Library \*/" $main_rs | cut -d: -f1)
 # 	head --lines=$(($lib_line_num)) $main_rs > $template_rs && echo "Updated $template_rs"
 # 	tail --lines=+$(($lib_line_num + 2)) $main_rs > $input_lib_rs && echo "Updated $input_lib_rs"
+
+clippy:
+	cargo clippy
+
+test_lib: clippy
+	cargo test
