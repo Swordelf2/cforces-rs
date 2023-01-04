@@ -10,9 +10,7 @@ GET_TEMPLATE:="bash" + " " + CONFIG_SCRIPT + " " + CONFIG_FILE + " " + "--get-te
 alias r := run
 alias i := irun
 alias re := reinit
-
-hello:
-	echo {{GET_TEMPLATE}}
+alias c := clippy
 
 # Runs `main.rs` against the given num.in text test file
 run num='0': build
