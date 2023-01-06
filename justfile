@@ -41,7 +41,7 @@ restore name: save_unnamed
 init: save_unnamed clean_tests
 	cp $({{GET_TEMPLATE}}) "src/main.rs"
 	@mkdir -p "{{TEXT_TESTS_DIR}}"
-	bash -c "touch {{TEXT_TESTS_DIR}}/{0,1}.{in,out} {{TEXT_TESTS_DIR}}/tmp.out"
+	bash -c "touch {{TEXT_TESTS_DIR}}/{0,1,2}.{in,out} {{TEXT_TESTS_DIR}}/tmp.out"
 
 # Saves `main.rs` into a directory for old unnamed solutions
 save_unnamed:
@@ -84,3 +84,9 @@ clippy:
 
 test_lib: clippy
 	cargo test
+
+py num='0':
+	python3 src/main.py < input/{{num}}.in
+
+ipy:
+	python3 -i src/main.py
