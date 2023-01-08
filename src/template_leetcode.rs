@@ -3,7 +3,7 @@
 
 // Main solution
 impl Solution {
-    #[allow(unused)]
+    #[allow(dead_code)]
     fn hello() {}
 }
 

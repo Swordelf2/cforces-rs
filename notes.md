@@ -1,4 +1,5 @@
 # TODO
+* Add `fn solve()` to cforces template
 * Seperate toolchain for atcoder with their version of Rust
 * Fix AtCoder 
 * Solve interactive problem on AtCoder
