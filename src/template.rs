@@ -1,5 +1,6 @@
 #![warn(clippy::todo, clippy::unimplemented, clippy::dbg_macro)]
 #![allow(clippy::mutable_key_type, clippy::needless_range_loop)]
+#![allow(clippy::bool_comparison)]
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     /* Input / output */

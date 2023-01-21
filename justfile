@@ -82,6 +82,9 @@ update_lib:
 clippy:
 	cargo clippy
 
+clippy_lib:
+	cargo clippy --lib
+
 test_lib: clippy
 	cargo test
 

@@ -1,27 +1,7 @@
 type UInt = u64;
-
-/// Computes greatest common divisor.
+/// Returns base 2 logarithm of the given value, rounded down
 ///
 /// # Panics
-///
-/// Panics of `a <= 0` or `b <= 0`.
-#[must_use]
-pub fn gcd(mut a: UInt, mut b: UInt) -> UInt {
-    if a < b {
-        std::mem::swap(&mut a, &mut b);
-    }
-    assert!(a > 0);
-    while b != 0 {
-        a %= b;
-        std::mem::swap(&mut a, &mut b);
-    }
-    a
-}
-
-/// Returns base 2 logarithm of the given value, rounded
-///
-/// # Panics
-///
 /// Panics if `value <= 0`.
 #[must_use]
 pub fn log2(value: UInt) -> UInt {
@@ -59,30 +39,8 @@ pub fn to_bits(mut val: UInt) -> Vec<bool> {
 }
 
 #[cfg(test)]
-#[allow(clippy::unreadable_literal)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn test_gcd() {
-        assert_eq!(gcd(0, 1), 1);
-        assert_eq!(gcd(1, 0), 1);
-        assert_eq!(gcd(2, 1), 1);
-        assert_eq!(gcd(3, 1), 1);
-        assert_eq!(gcd(1, 3), 1);
-        assert_eq!(gcd(2, 3), 1);
-        assert_eq!(gcd(3, 4), 1);
-        assert_eq!(gcd(2, 4), 2);
-        assert_eq!(gcd(4, 2), 2);
-        assert_eq!(gcd(5, 3), 1);
-        assert_eq!(gcd(11, 3), 1);
-        assert_eq!(gcd(4, 18), 2);
-        assert_eq!(gcd(100, 10), 10);
-        assert_eq!(gcd(15, 35), 5);
-        assert_eq!(gcd(64, 48), 16);
-        assert_eq!(gcd(9, 6), 3);
-        assert_eq!(gcd(1000000000000, 1000000), 1000000);
-    }
 
     #[test]
     fn test_log2() {
@@ -113,7 +71,7 @@ mod tests {
         assert_eq!(pow_mod(2, 11, BIG_NUM), 2048);
         assert_eq!(pow_mod(10, 14, BIG_NUM), 100_000_000_000_000);
         assert_eq!(pow_mod(10, 14, BIG_NUM), 100_000_000_000_000);
-        assert_eq!(pow_mod(4, 3, 123123), 64);
+        assert_eq!(pow_mod(4, 3, 123_123), 64);
         assert_eq!(pow_mod(1, 1, 10), 1);
         assert_eq!(pow_mod(2, 5, 7), 4);
         assert_eq!(pow_mod(3, 2, 6), 3);

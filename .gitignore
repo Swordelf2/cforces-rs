@@ -9,6 +9,7 @@
 /contest_config
 # Solution source files
 /src/main.rs
+/src/main.py
 /src/old
 # Input/output files
 /input

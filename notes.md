@@ -1,4 +1,8 @@
 # TODO
+* move to nums
+* factors
+* prime_divs
+
 * Add `fn solve()` to cforces template
 * Seperate toolchain for atcoder with their version of Rust
 * Fix AtCoder 
