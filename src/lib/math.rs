@@ -1,19 +1,19 @@
-type UInt = u64;
+type Uint = u64;
 /// Returns base 2 logarithm of the given value, rounded down
 ///
 /// # Panics
 /// Panics if `value <= 0`.
 #[must_use]
-pub fn log2(value: UInt) -> UInt {
+pub fn log2(value: Uint) -> Uint {
     assert!(value > 0);
-    (UInt::BITS - (value).leading_zeros() - 1).into()
+    (Uint::BITS - (value).leading_zeros() - 1).into()
 }
 
 /// Computes `value ^ pow mod m`
 #[must_use]
-pub fn pow_mod(value: UInt, mut pow: UInt, m: UInt) -> UInt {
-    let mut value_pow2: UInt = value;
-    let mut res: UInt = 1;
+pub fn pow_mod(value: Uint, mut pow: Uint, m: Uint) -> Uint {
+    let mut value_pow2: Uint = value;
+    let mut res: Uint = 1;
     while pow > 0 {
         if pow % 2 == 1 {
             res = res * value_pow2 % m;
@@ -27,7 +27,7 @@ pub fn pow_mod(value: UInt, mut pow: UInt, m: UInt) -> UInt {
 /// # Panics
 /// `val <= 0`
 #[must_use]
-pub fn to_bits(mut val: UInt) -> Vec<bool> {
+pub fn to_bits(mut val: Uint) -> Vec<bool> {
     assert!(val > 0);
     let mut res: Vec<bool> = Vec::new();
     while val > 0 {

@@ -93,3 +93,6 @@ py num='0':
 
 ipy:
 	python3 -i src/main.py
+
+gen num='2':
+	python3 src/gen.py > input/{{num}}.in
