@@ -1,5 +1,3 @@
-use std::ops::Range;
-
 type Int = i64;
 
 /// Finds partition point based on predicate `p`,
@@ -7,7 +5,7 @@ type Int = i64;
 /// Partition point is the first `0` in the sequence.
 /// See `std::slice::partition_point` for more info
 #[allow(clippy::match_bool)]
-pub fn partition_point(mut rng: Range<Int>, p: impl Fn(Int) -> bool) -> Int {
+pub fn partition_point(mut rng: std::ops::Range<Int>, p: impl Fn(Int) -> bool) -> Int {
     while rng.start < rng.end {
         let middle = rng.start + (rng.end - rng.start) / 2;
         match p(middle) {
