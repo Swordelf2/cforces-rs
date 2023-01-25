@@ -24,7 +24,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         };
     }
     use std::io::Write;
-    macro_rules! out {
+    macro_rules! print  {
         ( $( $x:expr ),* ) => {
             $(
                 write!(out, "{} ", $x).ok();
@@ -33,7 +33,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         };
     }
     #[allow(unused_macros)]
-    macro_rules! out_vec {
+    macro_rules! print_vec {
         ( $( $v:expr ),* ) => {
             $(
                 for elem in &$v {
@@ -50,8 +50,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let n = read!(usize);
         let mut a = read_vec!(usize; n);
         a.sort();
-        out!(a.iter().sum::<usize>());
-        out_vec!(a);
+        print!(a.iter().sum::<usize>());
+        print_vec!(a);
     }
 
     Ok(())
