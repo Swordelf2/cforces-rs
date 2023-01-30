@@ -1,5 +1,6 @@
 #![warn(clippy::todo, clippy::unimplemented, clippy::dbg_macro)]
 #![warn(clippy::pedantic)]
+#![allow(clippy::module_name_repetitions)]
 
 pub mod algo;
 pub mod graph;

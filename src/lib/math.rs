@@ -24,20 +24,6 @@ pub fn pow_mod(value: Uint, mut pow: Uint, m: Uint) -> Uint {
     res
 }
 
-/// # Panics
-/// `val <= 0`
-#[must_use]
-pub fn to_bits(mut val: Uint) -> Vec<bool> {
-    assert!(val > 0);
-    let mut res: Vec<bool> = Vec::new();
-    while val > 0 {
-        res.push((val % 2) == 1);
-        val /= 2;
-    }
-    res.reverse();
-    res
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -77,16 +63,5 @@ mod tests {
         assert_eq!(pow_mod(3, 2, 6), 3);
         assert_eq!(pow_mod(4, 10, 4), 0);
         assert_eq!(pow_mod(5, 3, 8), 5);
-    }
-
-    #[test]
-    fn test_to_bits() {
-        assert_eq!(to_bits(1), &[true]);
-        assert_eq!(to_bits(2), &[true, false]);
-        assert_eq!(to_bits(3), &[true, true]);
-        assert_eq!(to_bits(4), &[true, false, false]);
-        assert_eq!(to_bits(5), &[true, false, true]);
-        assert_eq!(to_bits(13), &[true, true, false, true]);
-        assert_eq!(to_bits(14), &[true, true, true, false]);
     }
 }
