@@ -2,6 +2,7 @@
 //! Most of the code in this module is copied from
 //! [EbTech's work](https://github.com/EbTech/rust-algorithms)
 pub mod disjoint_sets;
+pub mod segment_tree;
 
 /// A compact graph representation. Edges are numbered in order of insertion.
 /// Each adjacency list consists of all edges pointing out from a given vertex.
