@@ -38,124 +38,106 @@ impl SegmentTree {
 
     #[must_use]
     pub fn from_slice(arr: &[Int]) -> SegmentTree {
-        let mut tree = vec![ZERO; 4 * arr.len()];
-        Self::build_recursive(&mut tree, arr, 1, 0..arr.len());
-        SegmentTree {
-            tree,
+        let mut st = SegmentTree {
+            tree: vec![ZERO; 4 * arr.len()],
             len: arr.len(),
-        }
+        };
+        let root = st.root();
+        Self::build_recursive(&mut st.tree, arr, &root);
+        st
     }
 
     #[must_use]
     pub fn compute(&self, range: Range<usize>) -> Int {
-        Self::compute_recursive(&self.tree, 1, 0..self.len, range)
+        let root = self.root();
+        Self::compute_recursive(&self.tree, &root, range)
     }
 
     pub fn update(&mut self, idx: usize, value: Int) {
-        Self::update_recursive(&mut self.tree, 1, 0..self.len, idx, value);
+        let root = self.root();
+        Self::update_recursive(&mut self.tree, &root, idx, value);
     }
 
-    fn build_recursive(
-        tree: &mut [Int],
-        arr: &[Int],
-        node: usize,
-        node_range: Range<usize>,
-    ) {
-        match node_range.len() {
+    fn build_recursive(tree: &mut [Int], arr: &[Int], node: &Node) {
+        match node.range.len() {
             0 => (),
             1 => {
-                tree[node] = arr[node_range.start];
+                tree[node.id] = arr[node.range.start];
             }
             _ => {
-                let (left, right) = Self::children(node);
-                let (left_range, right_range) = Self::split_range(node_range);
-                Self::build_recursive(tree, arr, left, left_range);
-                Self::build_recursive(tree, arr, left, right_range);
-                tree[node] = op(tree[left], tree[right]);
+                let (left_node, right_node) = node.children();
+                Self::build_recursive(tree, arr, &left_node);
+                Self::build_recursive(tree, arr, &right_node);
+                tree[node.id] = op(tree[left_node.id], tree[right_node.id]);
             }
         }
     }
 
-    fn compute_recursive(
-        tree: &[Int],
-        node: usize,
-        node_range: Range<usize>,
-        compute_range: Range<usize>,
-    ) -> Int {
+    fn compute_recursive(tree: &[Int], node: &Node, compute_range: Range<usize>) -> Int {
         if compute_range.is_empty() {
             return ZERO;
         }
-        if node_range == compute_range {
-            return tree[node];
+        if node.range == compute_range {
+            return tree[node.id];
         }
-        let (left_node, right_node) = Self::children(node);
-        let (left_node_range, right_node_range) = Self::split_range(node_range);
+        let (left_node, right_node) = node.children();
         let left_compute_range =
-            compute_range.start..min(compute_range.end, left_node_range.end);
+            compute_range.start..min(compute_range.end, left_node.range.end);
         let right_compute_range =
-            max(compute_range.start, right_node_range.start)..compute_range.end;
-        let left_value =
-            Self::compute_recursive(tree, left_node, left_node_range, left_compute_range);
-        let right_value = Self::compute_recursive(
-            tree,
-            right_node,
-            right_node_range,
-            right_compute_range,
-        );
+            max(compute_range.start, right_node.range.start)..compute_range.end;
+        let left_value = Self::compute_recursive(tree, &left_node, left_compute_range);
+        let right_value = Self::compute_recursive(tree, &right_node, right_compute_range);
         op(left_value, right_value)
     }
 
-    fn update_recursive(
-        tree: &mut [Int],
-        node: usize,
-        node_range: Range<usize>,
-        idx: usize,
-        value: Int,
-    ) {
-        debug_assert!(!node_range.is_empty());
-        if node_range.len() == 1 {
-            tree[node_range.start] = value;
+    fn update_recursive(tree: &mut [Int], node: &Node, idx: usize, value: Int) {
+        debug_assert!(!node.range.is_empty());
+        if node.range.len() == 1 {
+            tree[node.id] = value;
             return;
         }
-        let (left_node, right_node) = Self::children(node);
-        let (left_range, right_range) = Self::split_range(node_range);
-        if left_range.contains(&idx) {
-            Self::update_recursive(tree, left_node, left_range, idx, value);
+        let (left_node, right_node) = node.children();
+        if left_node.range.contains(&idx) {
+            Self::update_recursive(tree, &left_node, idx, value);
         } else {
-            Self::update_recursive(tree, right_node, right_range, idx, value);
+            Self::update_recursive(tree, &right_node, idx, value);
         }
-        tree[node] = op(tree[left_node], tree[right_node]);
+        tree[node.id] = op(tree[left_node.id], tree[right_node.id]);
     }
 
-    fn children(node: usize) -> (usize, usize) {
-        (node * 2, node * 2 + 1)
+    fn root(&self) -> Node {
+        Node {
+            id: 1,
+            range: 0..self.len,
+        }
     }
+}
 
-    fn split_range(range: Range<usize>) -> (Range<usize>, Range<usize>) {
-        let middle = range.start + range.len() / 2;
-        (range.start..middle, middle..range.end)
+#[derive(Debug)]
+struct Node {
+    id: usize,
+    range: Range<usize>,
+}
+
+impl Node {
+    fn children(&self) -> (Node, Node) {
+        let middle = self.range.start + self.range.len() / 2;
+        (
+            Node {
+                id: self.id * 2,
+                range: self.range.start..middle,
+            },
+            Node {
+                id: self.id * 2 + 1,
+                range: middle..self.range.end,
+            },
+        )
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[allow(clippy::reversed_empty_ranges)]
-    fn check_st(arr: &[Int], st: &SegmentTree) {
-        for i in 0..arr.len() {
-            for j in i..arr.len() {
-                assert_eq!(
-                    st.compute(i..j),
-                    arr[i..j].iter().sum(),
-                    "i = {}, j = {}",
-                    i,
-                    j
-                );
-            }
-        }
-        assert_eq!(st.compute(1..0), 0);
-    }
 
     fn update_and_check(arr: &mut [Int], st: &mut SegmentTree, idx: usize, value: Int) {
         arr[idx] = value;
@@ -185,5 +167,21 @@ mod tests {
         check_st(&arr, &st);
         let st = SegmentTree::new(1);
         check_st(&arr[..1], &st);
+    }
+
+    #[allow(clippy::reversed_empty_ranges)]
+    fn check_st(arr: &[Int], st: &SegmentTree) {
+        for i in 0..arr.len() {
+            for j in i..arr.len() {
+                assert_eq!(
+                    st.compute(i..j),
+                    arr[i..j].iter().sum(),
+                    "i = {}, j = {}",
+                    i,
+                    j
+                );
+            }
+        }
+        assert_eq!(st.compute(1..0), 0);
     }
 }
