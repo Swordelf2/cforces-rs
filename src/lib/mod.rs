@@ -3,6 +3,7 @@
 #![allow(clippy::module_name_repetitions)]
 
 pub mod algo;
+pub mod ds;
 pub mod graph;
 pub mod input;
 pub mod math;

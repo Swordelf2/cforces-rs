@@ -3,15 +3,15 @@ use std::{
     ops::Range,
 };
 
-type Int = i32;
+type Int = i64;
 
-/// Associative operation used in the SegmentTree.
+/// Associative operation used in the [`SegmentTree`].
 fn op(a: Int, b: Int) -> Int {
     a + b
 }
 
 /// Zero in respect to the associative operation `op`, i.e.:  
-/// \forall x op(x, ZERO) = op(ZERO, x) = x
+/// \forall x: op(x, ZERO) = op(ZERO, x) = x
 const ZERO: Int = 0;
 
 /// Segment Tree.
