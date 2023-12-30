@@ -21,6 +21,8 @@ if [ ! -e 'src/template.rs' ]; then
 fi
 
 config_file=$1
+touch $config_file
+touch rust-toolchain
 cur_configuration=$(cat $config_file)
 
 if [ $# == 1 ]; then
