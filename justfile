@@ -12,6 +12,8 @@ alias i := irun
 alias re := reinit
 alias c := clippy
 
+_default: run
+
 # Runs `main.cpp` against the given num.in text test file
 cp num='0': 
 	g++ -Wall -Wextra -g -std=gnu++17 src/main.cpp -o main
