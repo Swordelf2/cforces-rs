@@ -48,13 +48,31 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let t = read!(usize);
     for _ in 0..t {
         let n = read!(usize);
-        let mut a = read_vec!(usize; n);
-        a.sort();
-        print!(a.iter().sum::<usize>());
-        print_vec!(a);
+        let a = read_vec!(u64; n);
     }
-
     Ok(())
+}
+
+/* Library stuff */
+
+pub fn update_min<T: Ord>(min_var: &mut Option<T>, new_value: T) {
+    if min_var.is_none()
+        || min_var
+            .as_ref()
+            .is_some_and(|old_value| new_value < *old_value)
+    {
+        *min_var = Some(new_value);
+    }
+}
+
+pub fn update_max<T: Ord>(max_var: &mut Option<T>, new_value: T) {
+    if max_var.is_none()
+        || max_var
+            .as_ref()
+            .is_some_and(|old_value| new_value > *old_value)
+    {
+        *max_var = Some(new_value);
+    }
 }
 
 /* Input */
