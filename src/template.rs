@@ -55,23 +55,26 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 /* Library stuff */
 
-pub fn update_min<T: Ord>(min_var: &mut Option<T>, new_value: T) {
-    if min_var.is_none()
-        || min_var
-            .as_ref()
-            .is_some_and(|old_value| new_value < *old_value)
-    {
-        *min_var = Some(new_value);
-    }
+pub trait OptionExt<T> {
+    fn update_min(min_var: &mut Self, new_value: T);
+    fn update_max(max_var: &mut Self, new_value: T);
 }
 
-pub fn update_max<T: Ord>(max_var: &mut Option<T>, new_value: T) {
-    if max_var.is_none()
-        || max_var
-            .as_ref()
-            .is_some_and(|old_value| new_value > *old_value)
-    {
-        *max_var = Some(new_value);
+impl<T: Ord> OptionExt<T> for Option<T> {
+    fn update_min(min_var: &mut Self, new_value: T) {
+        match min_var {
+            None => *min_var = Some(new_value),
+            Some(old_value) if new_value < *old_value => *min_var = Some(new_value),
+            _ => (),
+        }
+    }
+
+    fn update_max(max_var: &mut Self, new_value: T) {
+        match max_var {
+            None => *max_var = Some(new_value),
+            Some(old_value) if new_value > *old_value => *max_var = Some(new_value),
+            _ => (),
+        }
     }
 }
 
