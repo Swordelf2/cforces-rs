@@ -18,7 +18,7 @@ _default: run
 cp num='0': 
 	g++ -Wall -Wextra -g -std=gnu++17 src/main.cpp -o main
 	./main < {{TEXT_TESTS_DIR}}/{{num}}.in > {{TEXT_TESTS_DIR}}/tmp.out
-	@diff -Z {{TEXT_TESTS_DIR}}/tmp.out {{TEXT_TESTS_DIR}}/{{num}}.out && echo "OK!"
+	@diff -Z --strip-trailing-cr {{TEXT_TESTS_DIR}}/tmp.out {{TEXT_TESTS_DIR}}/{{num}}.out && echo "OK!"
 
 # Runs `main.rs` against the given num.in text test file
 run num='0': build
