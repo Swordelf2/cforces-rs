@@ -93,7 +93,7 @@ clippy:
 clippy_lib:
 	cargo clippy --lib
 
-test_lib: clippy
+libtest: clippy
 	cargo test
 
 py num='0':
