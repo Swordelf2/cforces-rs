@@ -55,7 +55,7 @@ fi
 if [ $new_configuration == "cforces" ]; then
     echo "stable" > rust-toolchain
 elif [ $new_configuration == "atcoder" ]; then
-    echo "1.42" > rust-toolchain
+    echo "stable" > rust-toolchain
 elif [ $new_configuration == "leetcode" ]; then
     echo "1.58" > rust-toolchain
 else
