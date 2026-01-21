@@ -16,7 +16,7 @@ if [ $# -lt 1 ]; then
     exit 1
 fi
 if [ ! -e 'src/template.rs' ]; then
-    echo "error: could not find `src/template.rs`, CWD could be incorrect -" $(pwd) 1>&2
+    echo "error: could not find $(src/template.rs), CWD could be incorrect -" $(pwd) 1>&2
     exit 1
 fi
 
@@ -53,9 +53,9 @@ if [ ! -e rust-toolchain ]; then
 fi
 
 if [ $new_configuration == "cforces" ]; then
-    echo "stable" > rust-toolchain
+    echo "stable" >rust-toolchain
 elif [ $new_configuration == "atcoder" ]; then
-    echo "1.42" > rust-toolchain
+    echo "stable" >rust-toolchain
 elif [ $new_configuration == "leetcode" ]; then
     echo "stable" > rust-toolchain
 else
@@ -63,5 +63,4 @@ else
     exit 1
 fi
 
-echo $new_configuration > $config_file
-    
+echo $new_configuration >$config_file

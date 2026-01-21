@@ -9,3 +9,5 @@ pub mod input;
 pub mod math;
 pub mod misc;
 pub mod num;
+pub mod perm;
+pub mod vec;

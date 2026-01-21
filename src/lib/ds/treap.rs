@@ -70,7 +70,9 @@ impl<K: Ord, V, W: Ord> Node<K, V, W> {
         node: Option<Box<Node<K, V, W>>>,
         split_key: &K,
     ) -> (NodePtr<K, V, W>, NodePtr<K, V, W>, NodePtr<K, V, W>) {
-        let Some(mut node) = node else { return (None, None, None) };
+        let Some(mut node) = node else {
+            return (None, None, None);
+        };
         match split_key.cmp(&node.key) {
             Ordering::Equal => {
                 let (left_tree, right_tree) = (node.left.take(), node.right.take());
@@ -98,8 +100,12 @@ impl<K: Ord, V, W: Ord> Node<K, V, W> {
         left_node: NodePtr<K, V, W>,
         right_node: NodePtr<K, V, W>,
     ) -> NodePtr<K, V, W> {
-        let Some(mut left_node) = left_node else { return right_node };
-        let Some(mut right_node) = right_node else { return Some(left_node) };
+        let Some(mut left_node) = left_node else {
+            return right_node;
+        };
+        let Some(mut right_node) = right_node else {
+            return Some(left_node);
+        };
         match left_node.weight.cmp(&right_node.weight) {
             Ordering::Less => {
                 left_node.right = Node::merge(left_node.right.take(), Some(right_node));
@@ -118,7 +124,9 @@ impl<K: Ord, V, W: Ord> Node<K, V, W> {
         node: Option<&'n Node<K, V, W>>,
         search_key: &K,
     ) -> Option<&'n Node<K, V, W>> {
-        let Some(node) = node else { return None; };
+        let Some(node) = node else {
+            return None;
+        };
         match search_key.cmp(&node.key) {
             Ordering::Equal => Some(node),
             Ordering::Less => {

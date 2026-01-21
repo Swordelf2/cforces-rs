@@ -16,7 +16,7 @@ impl PrimeFactors {
     /// Panics if `max_val` is too large.
     #[must_use]
     pub fn new(max_val: Uint) -> Self {
-        assert!(max_val <= 1_000_000);
+        assert!(max_val <= 50_000_000);
         let mut prime_factors: Vec<Uint> = vec![0; (max_val + 1) as usize];
         prime_factors[0] = 0;
         prime_factors[1] = 1;
@@ -123,6 +123,8 @@ mod tests {
         assert_eq!(pf.is_prime(7800), false);
         assert_eq!(pf.is_prime(1_000_000), false);
         assert_eq!(pf.is_prime(999_999), false);
+
+        assert_eq!(pf.prime_factors(1).next(), None);
 
         assert_eq!(
             pf.prime_factors(2 * 2 * 2 * 2 * 5 * 5 * 7 * 11 * 19)
