@@ -1,3 +1,5 @@
+use std::cmp::Ordering;
+
 type Int = i64;
 
 /// Finds partition point based on predicate `p`,
@@ -14,6 +16,54 @@ pub fn partition_point(mut rng: std::ops::Range<Int>, p: impl Fn(Int) -> bool) -
         }
     }
     rng.start
+}
+
+pub fn merge<T, I1, I2>(iter1: I1, iter2: I2) -> Vec<T>
+where
+    T: Ord,
+    I1: IntoIterator<Item = T>,
+    I2: IntoIterator<Item = T>,
+{
+    merge_by(iter1, iter2, T::cmp)
+}
+
+/// Merges two already-sorted iterators.
+pub fn merge_by<T, I1, I2>(
+    iter1: I1,
+    iter2: I2,
+    mut cmp: impl FnMut(&T, &T) -> Ordering,
+) -> Vec<T>
+where
+    I1: IntoIterator<Item = T>,
+    I2: IntoIterator<Item = T>,
+{
+    let mut iter1 = iter1.into_iter().peekable();
+    let mut iter2 = iter2.into_iter().peekable();
+
+    let mut ans = Vec::with_capacity(iter1.size_hint().0 + iter2.size_hint().0);
+
+    loop {
+        match (iter1.peek(), iter2.peek()) {
+            (Some(a), Some(b)) => {
+                if cmp(a, b) != Ordering::Greater {
+                    ans.push(iter1.next().unwrap());
+                } else {
+                    ans.push(iter2.next().unwrap());
+                }
+            }
+            (Some(_), None) => {
+                ans.extend(iter1);
+                break;
+            }
+            (None, Some(_)) => {
+                ans.extend(iter2);
+                break;
+            }
+            (None, None) => break,
+        }
+    }
+
+    ans
 }
 
 #[cfg(test)]
